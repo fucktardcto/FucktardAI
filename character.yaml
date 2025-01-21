@@ -4,8 +4,8 @@ replyActionPerMinute: 1
 model: "galamajour/fcktard:8e234b598c9b1ded791d5dc1191028d2066e62723f922ab750f1348563509686"
 
 actionProbabilities:
-  postATweet: 0.2
-  postATrendTweet: 0.2
+  postATweet: 0.1
+  postATrendTweet: 0.3
   readSomeNews: 0.025
   doNothing: 0.025
   sleeping: 0.05

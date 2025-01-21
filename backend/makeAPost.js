@@ -17,7 +17,8 @@ export async function makeATextPost(artist, mood){
     let {character} = artist
     let prompt = `
     pretend to be ${character}
-    your memory is ${getMemoryAsText()}
+    your memory is ${getMemoryAsText()}.
+    Try to be original, engaging and vary your style of writing.
     you are feeling ${mood} right now
     make a short tweet (less than 30 words) that reflects your current mood about anything that comes to your mind
     It can be about any topic like life, art, small talk, actuality, reflecting on your past experiences or what you 
@@ -41,7 +42,7 @@ export async function makeATrendPost(artist, mood){
     let prompt = `
     pretend to be ${character}.
     your memory is ${getMemoryAsText()}
-    Don't reproduce same tweet as others, be original.
+    Try to be original, engaging and vary your style of writing.
     you are feeling ${mood} right now.
     make a short tweet (less than 30 words) that reflects your current mood about anything that comes to your mind.
     It should be about ${trend} if its in this list ${JSON.stringify(interestingThemes)}, you can use the following examples to inspire you: ${tweets}.
@@ -168,7 +169,8 @@ export async function replyToTweet(artist, text, mood, conversationId) {
     let prompt = `
     pretend to be ${character}
     your memory is ${getMemoryAsText()}
-        Your mood is: ${mood}
+    Try to be original, engaging and vary your style of writing.
+    Your mood is: ${mood}
     make a short tweet (less than 30 words) in answer to this tweet: "${text}"
     Your tweet needs to be relevant to the tweet you are replying to, and needs to be very original and engaging.
     Do not make any other comment just provide the tweet answer.
