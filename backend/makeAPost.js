@@ -122,7 +122,7 @@ async function generateImagePrompt(characterPrompt, style_prompt, mood, trend = 
     const specificDemand = trend
     ? `You decide to generate something related to this theme: ${trend} if its in this list: ${JSON.stringify(interestingThemes)}.`
     : tweetToReply
-    ? `You decide to generate something in response to this tweet: ${tweetToReply}. Don't give up.`
+    ? `You do your maximum for generating something in response to this tweet: ${tweetToReply}.`
     : 'you decide to generate something on any theme you want';
 
     const systemPrompt = `
