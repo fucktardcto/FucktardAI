@@ -3,8 +3,8 @@ import "./loadEnv.js"
 import { addMemory, getMemoryAsText } from "./memory.js";
 import { generateImage } from "./replicateAdapter.js"
 import { postTweet, postTweetWithImage, getRandomTrendAndBestTweets, getLastMentions, createPoll, closePoll, getLastUsersPosts } from "./twitter/twitterClientPoster.js";
-import { completeTextFromChatGPTFromClaude } from "./llm/anthropicAdapter.js";
-import { completeTextFromChatGPTFromChatGPT } from "./llm/openaiAdapter.js";
+import { completeTextFromClaude } from "./llm/anthropicAdapter.js";
+import { completeTextFromChatGPT } from "./llm/openaiAdapter.js";
 import { getBestMentionToReply } from "./utils.js";
 
 const interestingThemes = [{
@@ -27,7 +27,7 @@ export async function makeATextPost(artist, mood){
     Do not make any other comment just provide the tweet
     the tweet is:
     `;
-    let text = await completeTextFromChatGPTFromChatGPT(prompt)
+    let text = await completeTextFromChatGPT(prompt)
     
     await postTweet(text)
     
