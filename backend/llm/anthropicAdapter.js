@@ -8,7 +8,7 @@ function getClient(){
     return client
 }
 
-export async function completeText(prompt) {
+export async function completeTextFromClaude(prompt) {
     let client = getClient()
     let output =   await client.messages.create({
         max_tokens: 1024,
@@ -17,14 +17,5 @@ export async function completeText(prompt) {
   });
 
   return output.content[0].text
-
-}
-
-export async function produceJson(prompt){
-
-
-    return await completeText(prompt)
-
-
 
 }

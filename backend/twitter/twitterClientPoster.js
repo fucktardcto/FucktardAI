@@ -2,7 +2,7 @@
 import fs from "fs"
 import { Scraper, SearchMode } from 'agent-twitter-client';
 import "../loadEnv.js"
-import { downloadImage, getRandomElements, isTweetFromToday } from "../utils.js";
+import { downloadImage, getRandomElements, isTweetFromLastHour, isTweetFromToday } from "../utils.js";
 import { twitterUsers } from "./users.js";
 
 
@@ -96,8 +96,8 @@ export async function getLastUsersPosts() {
         const lastUsersPostsData = await scraper.searchTweets(`from:${user} -isretweet -isreply`, 1, SearchMode.Latest);
 
         for await (const lastUserPost of lastUsersPostsData) {
-            const isFromToday = isTweetFromToday(lastUserPost);
-            if (!isFromToday) continue;
+            const isFromLastHour = isTweetFromLastHour(lastUserPost);
+            if (!isFromLastHour) continue;
 
             lastUsersPosts.push(lastUserPost);
         }

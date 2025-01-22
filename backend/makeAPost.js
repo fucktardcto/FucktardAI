@@ -3,7 +3,8 @@ import "./loadEnv.js"
 import { addMemory, getMemoryAsText } from "./memory.js";
 import { generateImage } from "./replicateAdapter.js"
 import { postTweet, postTweetWithImage, getRandomTrendAndBestTweets, getLastMentions, createPoll, closePoll, getLastUsersPosts } from "./twitter/twitterClientPoster.js";
-import { completeText, produceJson } from "./llm/anthropicAdapter.js";
+import { completeTextFromChatGPTFromClaude } from "./llm/anthropicAdapter.js";
+import { completeTextFromChatGPTFromChatGPT } from "./llm/openaiAdapter.js";
 import { getBestMentionToReply } from "./utils.js";
 
 const interestingThemes = [{
@@ -26,7 +27,7 @@ export async function makeATextPost(artist, mood){
     Do not make any other comment just provide the tweet
     the tweet is:
     `;
-    let text = await completeText(prompt)
+    let text = await completeTextFromChatGPTFromChatGPT(prompt)
     
     await postTweet(text)
     
@@ -50,7 +51,7 @@ export async function makeATrendPost(artist, mood){
     Do not make any other comment just provide the tweet
     the tweet is:
     `
-    let text = await completeText(prompt)
+    let text = await completeTextFromChatGPT(prompt)
 
     await postTweet(text)
 
@@ -159,7 +160,7 @@ async function generateImagePrompt(characterPrompt, style_prompt, mood, trend = 
     the array is:
     `
 
-    let result = await produceJson(llmPrompt)
+    let result = await completeTextFromChatGPT(llmPrompt)
 
     return JSON.parse(result)
 }
@@ -176,7 +177,7 @@ export async function replyToTweet(artist, text, mood, conversationId) {
     Do not make any other comment just provide the tweet answer.
     the tweet answer is:
     `;
-    let tweetReply = await completeText(prompt)
+    let tweetReply = await completeTextFromChatGPT(prompt)
     
     if (!tweetReply) return;
 

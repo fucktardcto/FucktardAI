@@ -1,4 +1,5 @@
-import { produceJson } from "./llm/anthropicAdapter.js"
+import { completeTextFromClaude } from "./llm/anthropicAdapter.js"
+import { completeTextFromChatGPT } from "./llm/openaiAdapter.js"
 
 let memories = []
 
@@ -19,6 +20,6 @@ export async function consolidateMemory(){
     Do not make any other comment. 
     the new memory is:
     `
-    memories = await produceJson(prompt)
+    memories = await completeTextFromChatGPT(prompt)
     console.log("memory", memories)
 }

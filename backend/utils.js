@@ -54,6 +54,15 @@ export function isTweetFromToday(tweet) {
   return (tweetDate >= startOfDay && tweetDate < endOfDay);
 };
 
+export function isTweetFromLastHour(tweet) {
+  const now = new Date();
+  const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
+
+  const tweetDate = new Date(tweet.timeParsed);
+
+  return (tweetDate >= oneHourAgo && tweetDate <= now);
+};
+
 export function getBestMentionToReply(mentions) {
   if (!mentions?.length)  return [];
 
