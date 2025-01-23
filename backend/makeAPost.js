@@ -2,7 +2,7 @@ import "./loadEnv.js"
 
 import { addMemory, getMemoryAsText } from "./memory.js";
 import { generateImage } from "./replicateAdapter.js"
-import { postTweet, postTweetWithImage, getRandomTrendAndBestTweets, getLastMentions, createPoll, closePoll, getLastUsersPosts } from "./twitter/twitterClientPoster.js";
+import { postTweet, postTweetWithImage, getRandomTrendAndBestTweets, getLastMentions, getLastUsersPosts } from "./twitter/twitterClientPoster.js";
 import { completeTextFromClaude } from "./llm/anthropicAdapter.js";
 import { completeTextFromChatGPT } from "./llm/openaiAdapter.js";
 import { getBestMentionToReply } from "./utils.js";
@@ -14,50 +14,82 @@ const interestingThemes = [{
     buzzWords: ['Meme', 'Moon', 'Pump', 'Drama', 'NGMI', 'WGMI', 'Rugpull', 'FUD', 'Airdrop', 'Gas', 'Degen', 'NFT', 'Ordinals', 'Staking', 'Flippening', 'Bullbear', 'Scam', 'Layer2', 'Multichain', 'GameFi', 'PFP', 'Mint', 'Royalties', 'FreeMint', 'RealYield', 'Rollups', 'MEV', 'Sniping', 'Telegram', 'Bots', 'MemeArt', 'Onchain', 'Exploits', 'Privacy', 'ZKProofs', 'Modular', 'Bridges', 'AI', 'Storage', 'Abstraction', 'Soulbound', 'Gaming', 'Land', 'Economy', 'FreetoOwn', 'Merch', 'Tattoos', 'Ponzi', 'Cult', 'Crashes', 'ETH', 'SOL', 'Bitcoin', 'CBDC', 'Governance', 'Polls', 'Spaces', 'X-Engagement', 'Elon', 'Adoption', 'Utility', 'Bots', 'Lambo', 'Engage2Earn', 'SniperBots', 'Shitpost', 'Vibes', 'Alpha', 'Lowcap', 'Presale', 'Farming', 'Yield', 'Options', 'DEX', 'Bullish', 'Bearish', 'NFTs', 'FreeNFT', 'Treasury', 'Tokenomics', 'Ecosystem', 'ChainWars', 'SocialFi', 'Community', 'TwitterRaids', 'WhaleTracking', '100x', 'Giveaway', 'ETHKillers', 'SpacesHost', 'BUIDL', 'Doxxed', 'Undervalued', 'Scarcity', 'AirdropSeason', 'CEX', 'DEXAggregator', 'HODL', 'Ponzinomics']
 }];
 
-export async function makeATextPost(artist, mood){
-    let {character} = artist
+const cryptoOnomatopoeia = [
+    "BOOM 🚀", "WEN MOON? 🌕", "HODL STRONG 💎🙌", 
+    "NGMI 😭", "REKT 💀", "LFG! 🏁", "SEND IT! 🚀", 
+    "PEW PEW! 🔫", "DUMP IT 💩", "BTFD 📉", "TO THE MOON! 🌙"
+];
+
+const tweetFormats = [
+    "Write it like a punchy one-liner.",
+    "Tell a short story with a surprising twist.",
+    "Create a meme-style tweet using emojis and slang.",
+    "Start with a deep philosophical insight, then ruin it with humor.",
+    "Make it sound like breaking news with an ironic twist."
+];
+
+const styleElements = [
+    "Use unexpected twists at the end of your tweets.",
+    "Incorporate onomatopoeias like 'BOOM', 'WHOOSH', 'PLOP' to add comic relief.",
+    "Leverage crypto slang like 'wen Lambo?', 'rekt', 'diamond hands'.",
+    "Make bold and exaggerated statements for comedic effect.",
+    "Mix deep thoughts with absurdity to surprise the audience.",
+    "Play with ironic self-deprecation, blending confidence and silliness."
+];
+
+export async function makeATextPost(artist, mood) {
+    const { character } = artist;
+    const randomOnomatopoeia = cryptoOnomatopoeia[Math.floor(Math.random() * cryptoOnomatopoeia.length)];
+    const randomFormat = tweetFormats[Math.floor(Math.random() * tweetFormats.length)];
+    const randomStyleElement = styleElements[Math.floor(Math.random() * styleElements.length)];
+
     let prompt = `
-    pretend to be ${character}
-    your memory is ${getMemoryAsText()}.
-    Try to be original, engaging and vary your style of writing.
-    you are feeling ${mood} right now
-    make a short tweet (less than 30 words) that reflects your current mood about anything that comes to your mind
-    It can be about any topic like life, art, small talk, actuality, reflecting on your past experiences or what you 
-    learned recently
-    Do not make any other comment just provide the tweet
-    the tweet is:
+        Pretend to be ${character}
+        Your memory is: ${getMemoryAsText()}.
+        Try to be original, engaging, and vary your writing style.
+        Your mood is ${mood}.
+        Format: ${randomFormat}.
+        Style tip: ${randomStyleElement}.
+        Add some humor, unpredictability, and crypto culture.
+        Make a short tweet (less than 30 words) that reflects your current mood.
+        Just provide the tweet.
+        The tweet is:
     `;
-    let text = await completeTextFromChatGPT(prompt)
-    
-    await postTweet(text)
-    
-    let memory = `posted a tweet: ${text}`
-    console.log(memory)
-    addMemory(memory)
+
+    let text = await completeTextFromChatGPT(prompt);
+    let tweetContent = `${randomOnomatopoeia} ${text}`;
+
+    await postTweet(tweetContent);
+
+    let memory = `Posted a tweet: ${tweetContent}`;
+    console.log(memory);
+    addMemory(memory);
 }
 
-export async function makeATrendPost(artist, mood){
+export async function makeATrendPost(artist, mood) {
     const { trend, tweets } = await getRandomTrendAndBestTweets();
+    let { character } = artist;
+    let randomFormat = tweetFormats[Math.floor(Math.random() * tweetFormats.length)];
 
-    let {character} = artist
     let prompt = `
-    pretend to be ${character}.
-    your memory is ${getMemoryAsText()}
-    Try to be original, engaging and vary your style of writing.
-    you are feeling ${mood} right now.
-    make a short tweet (less than 30 words) that reflects your current mood about anything that comes to your mind.
-    It should be about ${trend} if its in this list ${JSON.stringify(interestingThemes)}, you can use the following examples to inspire you: ${tweets}.
-    If its about a geopolitical conflict / which can incite racism/antisemitism or other bad things, you must avoid to talk about it and then talk about something else.
-    Do not make any other comment just provide the tweet
-    the tweet is:
-    `
-    let text = await completeTextFromChatGPT(prompt)
+        Pretend to be ${character}
+        Your memory is ${getMemoryAsText()}.
+        Try to be original, engaging and vary your writing style.
+        Your mood is ${mood}.
+        Format: ${randomFormat}
+        Create a short tweet (less than 30 words) about the trending topic: ${trend}.
+        Use the following examples as inspiration: ${tweets}.
+        If its about a geopolitical conflict / which can incite racism/antisemitism or other bad things, you must avoid to talk about it and then talk about something else.
 
-    await postTweet(text)
+        The tweet is:
+    `;
 
-    let memory = `posted a trend tweet: ${text}`
-    console.log(memory)
-    addMemory(memory)
+    let text = await completeTextFromChatGPT(prompt);
+    await postTweet(text);
+
+    let memory = `Posted a trend tweet: ${text}`;
+    console.log(memory);
+    addMemory(memory);
 }
 
 export async function makeAPicturePost(artist, mood){
