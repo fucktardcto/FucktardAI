@@ -212,7 +212,7 @@ export async function replyToTweet(artist, text, mood, conversationId) {
     Try to be original, engaging and vary your style of writing.
     Your mood is: ${mood}
     make a short tweet (less than 30 words) in answer to this tweet: "${text}"
-    Your tweet needs to be relevant to the tweet you are replying to, and needs to be very original and engaging.
+    Your tweet must be pertinent and relevant to the context of the tweet you are replying to, and needs to be very original and engaging.
     Do not make any other comment just provide the tweet answer.
     the tweet answer is:
     `;
