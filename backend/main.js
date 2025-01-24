@@ -91,6 +91,10 @@ const launchPost = () => {
     let firstAction = normalActions.postATweet.callback;
     const actionEverySecondsNb = 3600;
     wakeUp(normalActions, firstAction, actionPerMinute, actionEverySecondsNb);
+
+    setTimeout(() => {
+        wakeUp(normalActions, firstAction, actionPerMinute, actionEverySecondsNb);
+    }, 5 * 60 * 1000);
 };
 
 const launchReply = () => {
