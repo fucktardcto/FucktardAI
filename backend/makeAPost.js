@@ -51,7 +51,7 @@ export async function makeATextPost(artist, mood) {
         Format: ${randomFormat}.
         Style tip: ${randomStyleElement}.
         Add some humor, unpredictability, and crypto culture.
-        Make a short tweet (less than 30 words) that reflects your current mood.
+        Make a short tweet (less than 20 words) that reflects your current mood.
         Just provide the tweet.
         The tweet is:
     `;
@@ -77,7 +77,7 @@ export async function makeATrendPost(artist, mood) {
         Try to be original, engaging and vary your writing style.
         Your mood is ${mood}.
         Format: ${randomFormat}
-        Create a short tweet (less than 30 words) about the trending topic: ${trend}.
+        Create a short tweet (less than 20 words) about the trending topic: ${trend}.
         Use the following examples as inspiration: ${tweets}.
         If its about a geopolitical conflict / which can incite racism/antisemitism or other bad things, you must avoid to talk about it and then talk about something else.
 
