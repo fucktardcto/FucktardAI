@@ -135,7 +135,7 @@ export async function getAndSendTweetWithPicture(artist, mood, trend = null, twe
         console.error('Alas, I did not have enough inspiration to complete the painting')
 
         if (trend) {
-            return await makeATrendPost(artist, mood);
+            return await makeAPicturePost(artist, mood);
         }
 
         if (tweetToReply) {
