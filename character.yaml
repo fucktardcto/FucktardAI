@@ -9,8 +9,8 @@ actionProbabilities:
   readSomeNews: 0.025
   doNothing: 0.025
   sleeping: 0.05
-  postAPicture: 0.2
-  postATrendPicture: 0.1
+  postAPicture: 0.05
+  postATrendPicture: 0.25
 
 replyActionProbabilities:
   replyToMentions: 0.2

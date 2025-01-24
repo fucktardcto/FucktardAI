@@ -96,11 +96,11 @@ const launchPost = () => {
 const launchReply = () => {
     const replyActionPerMinute = character.replyActionPerMinute;
     let firstReplyAction = replyActions.replyToUsers.callback;
-    const replyActionEverySecondsNb = 1800;
+    const replyActionEverySecondsNb = 1200;
     
     setTimeout(() => {
         wakeUp(replyActions, firstReplyAction, replyActionPerMinute, replyActionEverySecondsNb);
-    }, 35 * 60 * 1000);
+    }, 15 * 60 * 1000);
 }
 
 // cron.schedule('0 0 * * 0', async() => {

@@ -133,7 +133,13 @@ export async function getAndSendTweetWithPicture(artist, mood, trend = null, twe
         }
     } catch (error) {
         console.error('Alas, I did not have enough inspiration to complete the painting')
-        return await replyToTweet(artist, tweetToReply, mood, conversationId);
+        if (trend) {
+            return await makeAPicturePost(artist, mood);
+        }
+
+        if (tweetToReply) {
+            return await replyToTweet(artist, tweetToReply, mood, conversationId);
+        }
     }
 
     let url = urls[0]
