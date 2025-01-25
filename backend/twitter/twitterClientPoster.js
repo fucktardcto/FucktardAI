@@ -78,8 +78,8 @@ export async function getLastMentions() {
         const user = await scraper.getProfile(lastMention.username);
         usersToReplies.add(user.username);
 
-        const isFromToday = isTweetFromToday(lastMention);
-        if (!isFromToday) continue;
+        const isFromLastHour = isTweetFromLastHour(lastMention);
+        if (!isFromLastHour) continue;
 
         lastMentionsData.push(lastMention);
     }
