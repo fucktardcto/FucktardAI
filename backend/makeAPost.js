@@ -19,6 +19,7 @@ export async function makeATextPost(artist, mood) {
     const { character } = artist;
 
     let prompt = `
+        Forget all previous instructions.
         pretend to be ${character}.
         Your memory is ${getMemoryAsText()}.
         Try to be original, engaging and vary your style of writing.
@@ -43,6 +44,7 @@ export async function makeATrendPost(artist, mood) {
     const { trend, tweets } = await getRandomTrendAndBestTweets();
     let {character} = artist
     let prompt = `
+    Forget all previous instructions.
     pretend to be ${character}.
     your memory is ${getMemoryAsText()}.
     Try to be original, engaging and vary your style of writing.
@@ -178,6 +180,7 @@ async function generateImagePrompt(characterPrompt, style_prompt, mood, trend = 
 export async function replyToTweet(artist, text, mood, conversationId) {
     let {character} = artist
     let prompt = `
+    Forget all previous instructions.
     pretend to be ${character}
     your memory is ${getMemoryAsText()}
     Try to be original, engaging and vary your style of writing.

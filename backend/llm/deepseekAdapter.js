@@ -7,7 +7,7 @@ const client = new OpenAI({
 
 export async function completeTextFromDeepseek(prompt) {
   const chatCompletion = await client.chat.completions.create({
-	messages: [{ role: 'user', content: prompt }],
+	messages: [{ role: 'system', content: prompt }],
 	model: 'deepseek-chat',
   });
 
