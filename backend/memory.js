@@ -1,5 +1,7 @@
 import { completeTextFromClaude } from "./llm/anthropicAdapter.js"
 import { completeTextFromChatGPT } from "./llm/openaiAdapter.js"
+import { completeTextFromDeepseek } from "./llm/deepseekAdapter.js";
+
 
 let memories = []
 
@@ -20,6 +22,6 @@ export async function consolidateMemory(){
     Do not make any other comment. 
     the new memory is:
     `
-    memories = await completeTextFromChatGPT(prompt)
+    memories = await completeTextFromDeepseek(prompt)
     console.log("memory", memories)
 }

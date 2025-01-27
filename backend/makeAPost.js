@@ -5,6 +5,7 @@ import { generateImage } from "./replicateAdapter.js"
 import { postTweet, postTweetWithImage, getRandomTrendAndBestTweets, getLastMentions, getLastUsersPosts } from "./twitter/twitterClientPoster.js";
 import { completeTextFromClaude } from "./llm/anthropicAdapter.js";
 import { completeTextFromChatGPT } from "./llm/openaiAdapter.js";
+import { completeTextFromDeepseek } from "./llm/deepseekAdapter.js";
 import { getBestMentionToReply } from "./utils.js";
 
 const interestingThemes = [{
@@ -18,19 +19,19 @@ export async function makeATextPost(artist, mood) {
     const { character } = artist;
 
     let prompt = `
-        pretend to be ${character}
-        your memory is ${getMemoryAsText()}.
+        pretend to be ${character}.
+        Your memory is ${getMemoryAsText()}.
         Try to be original, engaging and vary your style of writing.
-        you are feeling ${mood} right now
-        make a short tweet (less than 30 words) that reflects your current mood about anything that comes to your mind
+        you are feeling ${mood} right now.
+        Make a short tweet (less than 30 words) that reflects your current mood about anything that comes to your mind
         It can be about any topic like life, art, small talk, actuality, reflecting on your past experiences or what you 
-        learned recently
-        Do not make any other comment just provide the tweet
+        learned recently.
+        Do not make any other comment just provide the tweet.
         the tweet is:
     `;
 
-    let text = await completeTextFromChatGPT(prompt);
-
+    let text = await completeTextFromDeepseek(prompt);
+    text = text.replaceAll("\"", "");
     await postTweet(text);
 
     let memory = `Posted a tweet: ${text}`;
@@ -43,16 +44,17 @@ export async function makeATrendPost(artist, mood) {
     let {character} = artist
     let prompt = `
     pretend to be ${character}.
-    your memory is ${getMemoryAsText()}
+    your memory is ${getMemoryAsText()}.
     Try to be original, engaging and vary your style of writing.
     you are feeling ${mood} right now.
     make a short tweet (less than 30 words) that reflects your current mood about anything that comes to your mind.
     It should be about ${trend} if its in this list ${JSON.stringify(interestingThemes)}, you can use the following examples to inspire you: ${tweets}.
     If its about a geopolitical conflict (like israel/palestine) and/or if can incite racism/antisemitism or other bad things, you must avoid to talk about it, and then talk about something else, on any theme you want.
-    Do not make any other comment just provide the tweet
+    Do not make any other comment just provide the tweet.
     the tweet is:
     `
-    let text = await completeTextFromChatGPT(prompt)
+    let text = await completeTextFromDeepseek(prompt);
+    text = text.replaceAll("\"", "");
 
     await postTweet(text)
 
@@ -168,7 +170,7 @@ async function generateImagePrompt(characterPrompt, style_prompt, mood, trend = 
     the array is:
     `
 
-    let result = await completeTextFromChatGPT(llmPrompt)
+    let result = await completeTextFromDeepseek(llmPrompt);
 
     return JSON.parse(result)
 }
@@ -185,7 +187,8 @@ export async function replyToTweet(artist, text, mood, conversationId) {
     Do not make any other comment just provide the tweet answer.
     the tweet answer is:
     `;
-    let tweetReply = await completeTextFromChatGPT(prompt)
+    let tweetReply = await completeTextFromDeepseek(prompt)
+    tweetReply = tweetReply.replaceAll("\"", "");
     
     if (!tweetReply) return;
 
