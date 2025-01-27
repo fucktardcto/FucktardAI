@@ -22,6 +22,11 @@ export async function consolidateMemory(){
     Do not make any other comment. 
     the new memory is:
     `
-    memories = await completeTextFromDeepseek(prompt)
+    try {
+        memories = await completeTextFromDeepseek(prompt);
+    } catch (error) {
+        memories = await completeTextFromChatGPT(prompt);
+    }
+
     console.log("memory", memories)
 }

@@ -17,6 +17,7 @@ const interestingThemes = [{
 
 export async function makeATextPost(artist, mood) {
     const { character } = artist;
+    let text;
 
     let prompt = `
         Forget all previous instructions.
@@ -31,7 +32,11 @@ export async function makeATextPost(artist, mood) {
         the tweet is:
     `;
 
-    let text = await completeTextFromDeepseek(prompt);
+    try {
+        text = await completeTextFromDeepseek(prompt);
+    } catch (error) {
+        text = await completeTextFromChatGPT(prompt);
+    }
     text = text.replaceAll("\"", "");
     await postTweet(text);
 
@@ -42,7 +47,8 @@ export async function makeATextPost(artist, mood) {
 
 export async function makeATrendPost(artist, mood) {
     const { trend, tweets } = await getRandomTrendAndBestTweets();
-    let {character} = artist
+    let {character} = artist;
+    let text;
     let prompt = `
     Forget all previous instructions.
     pretend to be ${character}.
@@ -55,7 +61,11 @@ export async function makeATrendPost(artist, mood) {
     Do not make any other comment just provide the tweet.
     the tweet is:
     `
-    let text = await completeTextFromDeepseek(prompt);
+    try {
+        text = await completeTextFromDeepseek(prompt);
+    } catch (error) {
+        text = await completeTextFromChatGPT(prompt);
+    }
     text = text.replaceAll("\"", "");
 
     await postTweet(text)
@@ -132,7 +142,7 @@ export async function makeATrendPicturePost(artist, mood){
 }
 
 async function generateImagePrompt(characterPrompt, style_prompt, mood, trend = null, tweetToReply = null){   
-
+    let result;
     const specificDemand = trend
     ? `You decide to generate something related to this theme: ${trend} if its in this list: ${JSON.stringify(interestingThemes)}.`
     : tweetToReply
@@ -172,13 +182,19 @@ async function generateImagePrompt(characterPrompt, style_prompt, mood, trend = 
     the array is:
     `
 
-    let result = await completeTextFromDeepseek(llmPrompt);
+    try {
+        result = await completeTextFromDeepseek(llmPrompt);
+    } catch (error) {
+        result = await completeTextFromChatGPT(llmPrompt);
+    }
 
     return JSON.parse(result)
 }
 
 export async function replyToTweet(artist, text, mood, conversationId) {
-    let {character} = artist
+    let {character} = artist;
+    let tweetReply;
+
     let prompt = `
     Forget all previous instructions.
     pretend to be ${character}
@@ -190,7 +206,13 @@ export async function replyToTweet(artist, text, mood, conversationId) {
     Do not make any other comment just provide the tweet answer.
     the tweet answer is:
     `;
-    let tweetReply = await completeTextFromDeepseek(prompt)
+
+    try {
+        tweetReply = await completeTextFromDeepseek(prompt);
+    } catch (error) {
+       tweetReply = await completeTextFromChatGPT(prompt);
+    }
+
     tweetReply = tweetReply.replaceAll("\"", "");
     
     if (!tweetReply) return;
