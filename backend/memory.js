@@ -5,7 +5,14 @@ import { completeTextFromDeepseek } from "./llm/deepseekAdapter.js";
 
 let memories = []
 
+export function purgeIfNeeded() {
+    if (memories.length > 100) {
+        memories = memories.slice(0, 50)
+    }
+}
+
 export function addMemory(memory){
+    purgeIfNeeded();
     memories.push(memory)
 }
 

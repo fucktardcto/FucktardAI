@@ -2,12 +2,13 @@
 import fs from "fs"
 import { Scraper, SearchMode } from 'agent-twitter-client';
 import "../loadEnv.js"
-import { downloadImage, getRandomElements, isTweetFromLastHour, isTweetFromToday } from "../utils.js";
+import { downloadImage, getRandomElements, isTweetFromLastHour } from "../utils.js";
 import { twitterUsers } from "./users.js";
 
 
 const scraper = new Scraper();
 const username = 'FcktardAI';
+const IS_TEST = process.env.ENV === 'test';
 
 async function loginIfNeeded(){
 
@@ -31,6 +32,8 @@ async function loginIfNeeded(){
 export async function postTweet(text, replyToTweetId = null){
     await loginIfNeeded(scraper);
 
+    if (IS_TEST) return;
+
     await scraper.sendTweet(text, replyToTweetId);
 }
 
@@ -45,6 +48,8 @@ export async function postTweetWithImage(text, imageUrl, conversationId = null){
             mediaType: 'image/jpeg'
         }
     ]
+
+    if (IS_TEST) return;
 
     await scraper.sendTweet(text, conversationId, mediaData);
 }

@@ -115,7 +115,7 @@ const launchReply = () => {
 
 const start = () => {
     if (process.env.POST_FEATURE === "true") {
-    launchPost();
+        launchPost();
     }
 
     if (process.env.REPLY_FEATURE === "true") {
