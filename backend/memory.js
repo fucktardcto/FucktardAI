@@ -7,7 +7,7 @@ let memories = []
 
 export function purgeIfNeeded() {
     if (memories.length > 100) {
-        memories = memories.slice(0, 50)
+        memories = [];
     }
 }
 
