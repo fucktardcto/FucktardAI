@@ -10,7 +10,7 @@ let newsRssUrl = character.newsRssUrl
 let moods = character.available_moods
 const normalActions = {
     postATweet: {
-        probability: character.actionProbabilities.postATweet,
+        probability: process.env.PROBABILITY_POST_A_TWEET,
         callback: () => {
            let mood = moods[Math.floor(Math.random() * moods.length)];
            console.log(`I am ${mood}... let's make some post`);
@@ -18,7 +18,7 @@ const normalActions = {
         }
     },
     postATrendTweet: {
-        probability: character.actionProbabilities.postATrendTweet,
+        probability: process.env.PROBABILITY_POST_A_TREND_TWEET,
         callback: () => {
            let mood = moods[Math.floor(Math.random() * moods.length)];
            console.log(`I am ${mood}... let's make some post`);
@@ -26,29 +26,22 @@ const normalActions = {
         }
     },
     readSomeNews: {
-        probability: character.actionProbabilities.readSomeNews,
+        probability: process.env.PROBABILITY_NEWS,
         callback: () => {
             readRandomNews(newsRssUrl)
            
         }
     },
     doNothing: {
-        probability: character.actionProbabilities.doNothing,
+        probability: process.env.PROBABILITY_NOTHING,
         callback: () => {
             let action = "Doing nothing, just chillin'!" 
             console.log(action)
             addMemory(action)
         }
     },
-    sleeping: {
-        probability: character.actionProbabilities.sleeping,
-        callback: () => {
-            console.log("let's get some sleep")
-            sleep()
-        }
-    },
     postAPicture: {
-        probability: character.actionProbabilities.postAPicture,
+        probability: process.env.PROBABILITY_POST_A_PICTURE,
         callback: () => {
             let mood = moods[Math.floor(Math.random() * moods.length)];
             console.log(`I am ${mood}... let's make some art`);
@@ -56,7 +49,7 @@ const normalActions = {
         }
     },
     postATrendPicture: {
-        probability: character.actionProbabilities.postATrendPicture,
+        probability: process.env.PROBABILITY_POST_A_TREND_PICTURE,
         callback: () => {
             let mood = moods[Math.floor(Math.random() * moods.length)];
             console.log(`I am ${mood}... let's make some art`);
@@ -67,7 +60,7 @@ const normalActions = {
 
 const replyActions = {
     replyToMentions: {
-        probability: character.replyActionProbabilities.replyToMentions,
+        probability: process.env.PROBABILITY_REPLY_MENTIONS,
         callback: () => {
            let mood = moods[Math.floor(Math.random() * moods.length)];
            console.log(`I am ${mood}... let's reply to a mention post`);
@@ -75,7 +68,7 @@ const replyActions = {
         }
     },
     replyToUsers: {
-        probability: character.replyActionProbabilities.replyToUsers,
+        probability: process.env.PROBABILITY_REPLY_USERS,
         callback: () => {
            let mood = moods[Math.floor(Math.random() * moods.length)];
            console.log(`I am ${mood}... let's reply to a user post`);
